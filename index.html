@@ -121,7 +121,7 @@
   <p>Comparing the extracted frames with the original video helped us understand that a video is fundamentally a sequence of still images displayed over time. By extracting frames, we could directly observe how motion in the video is created from individual images. </p>
 
   <div class="note">
-    <h4>Method → Observation → Conclusion</h4>
+    <h4>In summary: Method → Observation → Conclusion</h4>
     <p><strong>Method:</strong> OpenCV and MoviePy extracted 190 JPEG frames from the same video.</p>
     <p><strong>Observation:</strong> MoviePy generated files that were approximately 54% smaller while preserving visual quality.</p>
     <p><strong>Conclusion:</strong> Different default compression settings can significantly reduce storage requirements without introducing perceptible visual differences.</p>
@@ -174,18 +174,6 @@
     These values were used to populate the comparison table above. The nearly identical durations confirm that both methods extracted the complete audio track from the original video, while the bitrate difference explains the approximately 2× larger file size produced by MoviePy.
   </div>
 
-  <div class="note">
-
-    <h4>Method → Observation → Conclusion</h4>
-
-    <p><strong>Method:</strong> ffprobe was used to inspect the exported audio metadata.</p>
-
-    <p><strong>Observation:</strong> MoviePy generated stereo 128 kbps audio, while FFmpeg generated mono 64 kbps audio.</p>
-
-    <p><strong>Conclusion:</strong> Encoding parameters such as bitrate and channel configuration directly influence file size without necessarily affecting human perception.</p>
-
-  </div>
-
   <h3>Similarities</h3>
   <ul>
     <li>Both take the same video file as input and output an MP3</li>
@@ -226,6 +214,13 @@
   <p>Using FFmpeg's <code>ffprobe</code> tool allowed us to inspect the technical properties of the extracted audio files, including duration, bitrate, sample rate, and channel configuration. The FFmpeg output showed a duration of 18.94 seconds and a bitrate of 64 kb/s, while the MoviePy output showed a duration of 18.96 seconds and a bitrate of 128 kb/s. </p>
   <p>We learned that bitrate has a direct impact on file size. Since MoviePy encoded the audio at 128 kb/s, the resulting file was approximately twice as large as the FFmpeg version encoded at 64 kb/s. However, when listening to both files, the audible difference was minimal because the original clip mainly contains ambient zoo sounds and does not require a high bitrate to preserve perceptual quality.</p>
   <p>This observation showed us that larger files do not always produce noticeably better audio. The encoding settings affect storage requirements much more than perceived quality for simple audio content.</p>
+
+  <div class="note">
+    <h4>In summary: Method → Observation → Conclusion</h4>
+    <p><strong>Method:</strong> ffprobe was used to inspect the exported audio metadata.</p>
+    <p><strong>Observation:</strong> MoviePy generated stereo 128 kbps audio, while FFmpeg generated mono 64 kbps audio.</p>
+    <p><strong>Conclusion:</strong> Encoding parameters such as bitrate and channel configuration directly influence file size without necessarily affecting human perception.</p>
+  </div>
 </div>
 
 <!-- Q3 -->
