@@ -150,6 +150,21 @@
     <tr><td>Sound quality</td><td colspan="2">Perceptually identical for this clip</td></tr>
   </table>
 
+  <div class="note">
+    <strong>How were bitrate and duration measured?</strong><br>
+    We used the <code>ffprobe</code> utility included with FFmpeg to inspect the exported MP3 files:
+    <br><br>
+    <code>ffprobe zoo_ffmpeg.mp3</code><br>
+    <code>ffprobe zoo_moviepy.mp3</code>
+    <br><br>
+    The output reported:
+    <ul>
+        <li><strong>FFmpeg:</strong> Duration = 18.94 s, Bitrate = 64 kb/s, 48 kHz mono audio</li>
+        <li><strong>MoviePy:</strong> Duration = 18.96 s, Bitrate = 128 kb/s, 44.1 kHz stereo audio</li>
+    </ul>
+    These values were used to populate the comparison table above. The nearly identical durations confirm that both methods extracted the complete audio track from the original video, while the bitrate difference explains the approximately 2× larger file size produced by MoviePy.
+  </div>
+
   <h3>Similarities</h3>
   <ul>
     <li>Both take the same video file as input and output an MP3</li>
