@@ -116,7 +116,16 @@
   <p>MoviePy — more concise code and output files are ~54% smaller with no visual quality loss.</p>
 
   <h3>What we learned</h3>
-  <p>We observed how different libraries apply different default JPEG quality settings, directly affecting file size without affecting visual quality. We also saw how OpenCV aligns to actual frame boundaries in the video stream, while MoviePy interpolates at exact time intervals — both valid strategies depending on the use case.</p>
+  <p>We observed how different libraries apply different default JPEG compression settings during frame extraction. OpenCV produced images averaging about 33 KB per frame, while MoviePy produced images averaging about 15 KB per frame. Despite the large difference in file size, the extracted frames appeared visually identical because both libraries captured the same video content and the compression difference was below the level noticeable to the human eye.</p>
+  <p>We also observed that OpenCV extracts frames based on the actual frame positions stored in the video stream, whereas MoviePy samples frames using exact timestamps. Although the extraction methods differ internally, both approaches successfully represented the original video and produced nearly identical visual results. </p>
+  <p>Comparing the extracted frames with the original video helped us understand that a video is fundamentally a sequence of still images displayed over time. By extracting frames, we could directly observe how motion in the video is created from individual images. </p>
+
+  <div class="note">
+    <h4>Method → Observation → Conclusion</h4>
+    <p><strong>Method:</strong> OpenCV and MoviePy extracted 190 JPEG frames from the same video.</p>
+    <p><strong>Observation:</strong> MoviePy generated files that were approximately 54% smaller while preserving visual quality.</p>
+    <p><strong>Conclusion:</strong> Different default compression settings can significantly reduce storage requirements without introducing perceptible visual differences.</p>
+  </div>
 </div>
 
 <!-- Q2 -->
@@ -137,7 +146,7 @@
       <div class="audio-title">MoviePy</div>
       <div class="audio-meta">297.0 KB &nbsp;·&nbsp; 128 kbps &nbsp;·&nbsp; 18.99s</div>
       <audio controls>
-        <source src="zoo_ffmpeg.mp3" type="audio/mp3">
+        <source src="zoo_moviepy.mp3" type="audio/mp3">
       </audio>
     </div>
   </div>
@@ -163,6 +172,18 @@
         <li><strong>MoviePy:</strong> Duration = 18.96 s, Bitrate = 128 kb/s, 44.1 kHz stereo audio</li>
     </ul>
     These values were used to populate the comparison table above. The nearly identical durations confirm that both methods extracted the complete audio track from the original video, while the bitrate difference explains the approximately 2× larger file size produced by MoviePy.
+  </div>
+
+  <div class="note">
+
+    <h4>Method → Observation → Conclusion</h4>
+
+    <p><strong>Method:</strong> ffprobe was used to inspect the exported audio metadata.</p>
+
+    <p><strong>Observation:</strong> MoviePy generated stereo 128 kbps audio, while FFmpeg generated mono 64 kbps audio.</p>
+
+    <p><strong>Conclusion:</strong> Encoding parameters such as bitrate and channel configuration directly influence file size without necessarily affecting human perception.</p>
+
   </div>
 
   <h3>Similarities</h3>
@@ -202,7 +223,9 @@
   <p>MoviePy — simpler setup (especially on macOS where FFmpeg requires manual installation) and integrates into Python scripts without switching tools.</p>
 
   <h3>What we learned</h3>
-  <p>We learned that audio file size is directly determined by bitrate: MoviePy's 128 kbps output is exactly double the size of FFmpeg's 64 kbps output because it stores twice the data per second. We also discovered that MoviePy is a Python wrapper around FFmpeg — understanding this helped us debug compatibility issues we encountered. Finally, we learned to set up a development environment on macOS from scratch, adapting Windows-based instructions to use Homebrew instead of manual PATH configuration.</p>
+  <p>Using FFmpeg's <code>ffprobe</code> tool allowed us to inspect the technical properties of the extracted audio files, including duration, bitrate, sample rate, and channel configuration. The FFmpeg output showed a duration of 18.94 seconds and a bitrate of 64 kb/s, while the MoviePy output showed a duration of 18.96 seconds and a bitrate of 128 kb/s. </p>
+  <p>We learned that bitrate has a direct impact on file size. Since MoviePy encoded the audio at 128 kb/s, the resulting file was approximately twice as large as the FFmpeg version encoded at 64 kb/s. However, when listening to both files, the audible difference was minimal because the original clip mainly contains ambient zoo sounds and does not require a high bitrate to preserve perceptual quality.</p>
+  <p>This observation showed us that larger files do not always produce noticeably better audio. The encoding settings affect storage requirements much more than perceived quality for simple audio content.</p>
 </div>
 
 <!-- Q3 -->
@@ -213,7 +236,7 @@
   <div class="audio-row">
    <div class="audio-box">
      <div class="audio-title">Combined Image + Audio Video</div>
-     <div class="audio-meta">704 KB · MP4 · ~19s</div>
+     <div class="audio-meta">704 KB · MP4 </div>
 
     <video controls width="100%">
       <source src="output.mp4" type="video/mp4">
@@ -227,21 +250,20 @@
     <tr><td>Output format</td><td>MPEG-4 (.mp4)</td></tr>
     <tr><td>File size</td><td>704 KB</td></tr>
     <tr><td>FPS used</td><td>1 fps</td></tr>
-    <tr><td>Duration</td><td>Matched to audio clip (~19s)</td></tr>
+    <tr><td>Duration</td><td>Matched to audio clip (~43s)</td></tr>
   </table>
 
   <h3>What we learned</h3>
-  <p>Setting fps=1 for a static image video is a coding best practice: since the image never changes, only one frame per second needs to be encoded instead of 24 or 30. This directly reduces both file size and encoding time, with no perceptible quality loss — the video looks identical because a repeated static frame carries no new information.</p>
-  <p>We also learned how to synchronize clip durations: the image clip's duration must be explicitly set to match the audio duration, otherwise MoviePy either cuts the audio short or runs the video silent at the end. This reflects how video containers work — the video and audio tracks are separate streams that must be aligned.</p>
-  <div class="note">The relationship between method and result is direct: fps=1 means the encoder stores ~19 frames total instead of ~570 (at 30 fps), which explains why a static-image video with audio is only 704 KB despite being 19 seconds long.</div>
+  <p>Creating a video from a static image demonstrated how video and audio streams can be combined into a single multimedia file. We learned that the image clip duration must match the audio duration to ensure proper synchronization throughout playback.</p>
+  <p>We also observed the relationship between frame rate and file size. Since the image never changes, using 1 fps is sufficient because additional frames would contain identical visual information. As a result, the encoder only needed to store about 19 frames for the entire video instead of hundreds of frames at a traditional frame rate such as 30 fps.</p>
+  <p>This directly explains why the generated video remained visually identical while requiring significantly less storage space and encoding time. The method (using a low frame rate for a static image) directly produced the observed result (a small output file).</p>
 </div>
 
 <!-- BONUS -->
 <div class="page" id="page-bonus">
   <h2>Bonus — Custom Multimedia Applications</h2>
-  <p>Two additional tools built on top of the project's core libraries.</p>
 
-  <h3>1. Audio Trimmer (CLI)</h3>
+  <h3>Audio Trimmer (CLI)</h3>
   <p>Command-line script that accepts a start time and end time in seconds as arguments and saves only that portion as a new MP3 file.</p>
   <table>
     <tr><th>Usage</th><td><code>python audio_trimmer.py &lt;start&gt; &lt;end&gt;</code></td></tr>
@@ -249,16 +271,9 @@
     <tr><th>Output</th><td>zoo_trimmed_2s_to_8s.mp3 (96.8 KB, 6-second clip)</td></tr>
     <tr><th>Library</th><td>MoviePy — AudioFileClip.subclip()</td></tr>
   </table>
-
-  <h3>2. GUI Frame &amp; Audio Extractor</h3>
-  <p>Desktop application with a graphical interface built using Tkinter. The user selects any video file through a file dialog, then extracts all frames as PNG or the audio track as WAV, with a real-time progress bar during frame extraction.</p>
-  <table>
-    <tr><th>Interface</th><td>Tkinter (Python standard library)</td></tr>
-    <tr><th>Frame output</th><td>PNG files saved to extracted_frames_GUI/</td></tr>
-    <tr><th>Audio output</th><td>WAV (PCM 16-bit) saved to extracted_audio_GUI/</td></tr>
-    <tr><th>Extra feature</th><td>Real-time progress bar — updates every 10 frames</td></tr>
-  </table>
-  <div class="note">Both tools were built from scratch using only the same libraries used in the main project questions (OpenCV, MoviePy, Tkinter). No additional dependencies.</div>
+  <audio controls>
+   <source src="zoo_trimmed_2s_to_8s.mp3" type="audio/mpeg">
+  </audio>
 </div>
 
 <footer>
