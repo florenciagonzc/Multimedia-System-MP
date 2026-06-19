@@ -250,7 +250,7 @@
 
   <h3>What we learned</h3>
   <p>Creating a video from a static image demonstrated how video and audio streams can be combined into a single multimedia file. We learned that the image clip duration must match the audio duration to ensure proper synchronization throughout playback.</p>
-  <p>We also observed the relationship between frame rate and file size. Since the image never changes, using 1 fps is sufficient because additional frames would contain identical visual information. As a result, the encoder only needed to store about 19 frames for the entire video instead of hundreds of frames at a traditional frame rate such as 30 fps.</p>
+  <p>We also observed the relationship between frame rate and file size. Since the image never changes, using 1 fps is sufficient because additional frames would contain identical visual information. As a result, the encoder only needed to store about 43 frames for the entire video instead of hundreds of frames at a traditional frame rate such as 30 fps.</p>
   <p>This directly explains why the generated video remained visually identical while requiring significantly less storage space and encoding time. The method (using a low frame rate for a static image) directly produced the observed result (a small output file).</p>
 </div>
 
