@@ -261,19 +261,97 @@
 
 <!-- BONUS -->
 <div class="page" id="page-bonus">
-  <h2>Bonus — Custom Multimedia Applications</h2>
+  <section class="bonus-card">
 
-  <h3>Audio Trimmer (CLI)</h3>
-  <p>Command-line script that accepts a start time and end time in seconds as arguments and saves only that portion as a new MP3 file.</p>
-  <table>
-    <tr><th>Usage</th><td><code>python audio_trimmer.py &lt;start&gt; &lt;end&gt;</code></td></tr>
-    <tr><th>Example</th><td><code>python audio_trimmer.py 2 8</code> → exports seconds 2–8</td></tr>
-    <tr><th>Output</th><td>zoo_trimmed_2s_to_8s.mp3 (96.8 KB, 6-second clip)</td></tr>
-    <tr><th>Library</th><td>MoviePy — AudioFileClip.subclip()</td></tr>
-  </table>
-  <audio controls>
-   <source src="zoo_trimmed_2s_to_8s.mp3" type="audio/mpeg">
-  </audio>
+    <h3>Audio Trimmer (CLI)</h3>
+
+    <p>
+        A command-line application that accepts a start time and end time in
+        seconds and extracts only that portion of an MP3 file, creating a new
+        audio file without modifying the original.
+    </p>
+
+    <table>
+        <tr>
+            <th>Usage</th>
+            <td><code>python audio_trimmer.py &lt;start&gt; &lt;end&gt;</code></td>
+        </tr>
+
+        <tr>
+            <th>Example</th>
+            <td>
+                <code>python audio_trimmer.py 2 8</code>
+                → exports seconds 2–8
+            </td>
+        </tr>
+
+        <tr>
+            <th>Output</th>
+            <td>
+                zoo_trimmed_2s_to_8s.mp3
+                (96.8 KB, 6-second clip)
+                <audio controls>
+                   <source src="zoo_trimmed_2s_to_8s.mp3" type="audio/mpeg">
+                </audio>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Library</th>
+            <td>
+                MoviePy —
+                <code>AudioFileClip.subclip()</code>
+            </td>
+        </tr>
+    </table>
+
+
+    <h4>Why is this useful?</h4>
+
+    <p>
+        Audio trimming is a common multimedia preprocessing task used to isolate
+        relevant segments from larger recordings. Instead of processing or
+        sharing an entire audio file, users can extract only the portion they
+        need, reducing storage requirements and simplifying subsequent analysis.
+    </p>
+
+    <ul>
+        <li>Creating short podcast or video clips</li>
+
+        <li>Removing unnecessary sections from recordings</li>
+
+        <li>Preparing datasets for speech recognition tasks</li>
+
+        <li>Extracting samples for multimedia editing workflows</li>
+    </ul>
+
+
+    <h4>Relationship between the method and the result</h4>
+
+    <p>
+        MoviePy's <code>subclip()</code> function allows precise manipulation
+        of temporal information without manually decoding and reconstructing the
+        entire audio stream. By specifying start and end times, the library
+        automatically generates a new file containing only the selected segment.
+    </p>
+
+    <p>
+        This demonstrates how high-level multimedia libraries can simplify
+        complex editing operations while maintaining the original audio quality.
+    </p>
+
+
+    <h4>What we learned</h4>
+
+    <p>
+        This exercise showed that multimedia processing is not limited to
+        extraction tasks. The same libraries can also be used to manipulate and
+        repurpose multimedia content into practical applications. We learned how
+        temporal operations can be automated and integrated into larger
+        multimedia workflows.
+    </p>
+
+</section>
 </div>
 
 <footer>
